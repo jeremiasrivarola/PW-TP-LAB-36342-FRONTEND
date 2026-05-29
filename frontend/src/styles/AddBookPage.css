@@ -1,0 +1,210 @@
+.addbook-page {
+  min-height: 100vh;
+  background-color: #dfe5c2;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+}
+
+.addbook-main {
+  flex: 1;
+  padding: 40px 60px;
+}
+
+.addbook-title {
+  font-size: 40px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.addbook-error,
+.addbook-success {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.addbook-error {
+  color: #b00020;
+}
+
+.addbook-success {
+  color: #1f6f3d;
+}
+
+.addbook-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #efebe7;
+  border: 4px solid #000;
+  border-radius: 34px;
+  padding: 30px;
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+.addbook-left {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+.addbook-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.addbook-cover-box {
+  width: 220px;
+  height: 320px;
+  border: 3px solid #000;
+  background: #f5f5f5;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.addbook-cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.addbook-cover-placeholder {
+  font-size: 20px;
+  color: #555;
+}
+
+.addbook-label {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.addbook-input,
+.addbook-textarea {
+  width: 100%;
+  border: 3px solid #000;
+  border-radius: 16px;
+  background: #f8f8f8;
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.addbook-textarea {
+  resize: vertical;
+}
+
+.addbook-row {
+  display: flex;
+  gap: 16px;
+}
+
+.addbook-col {
+  flex: 1;
+}
+
+.addbook-stars {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.addbook-star {
+  background: none;
+  border: none;
+  font-size: 38px;
+  cursor: pointer;
+  color: #222;
+  padding: 0;
+  line-height: 1;
+}
+
+.addbook-star.active {
+  color: #000;
+}
+
+.addbook-status {
+  max-width: 320px;
+  background-color: #d9ddbb;
+  font-weight: 600;
+}
+
+.addbook-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.addbook-primary-btn,
+.addbook-secondary-btn {
+  border: 3px solid #000;
+  border-radius: 18px;
+  padding: 14px 22px;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+.addbook-primary-btn {
+  background: #d9ddbb;
+  font-weight: 600;
+}
+
+.addbook-secondary-btn {
+  background: #f5f5f5;
+}
+
+.addbook-primary-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .addbook-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .addbook-left {
+    width: 100%;
+    align-items: center;
+  }
+
+  .addbook-right {
+    width: 100%;
+  }
+
+  .addbook-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .addbook-main {
+    padding: 24px 18px;
+  }
+
+  .addbook-title {
+    font-size: 30px;
+  }
+
+  .addbook-card {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .addbook-cover-box {
+    width: 180px;
+    height: 260px;
+  }
+}
