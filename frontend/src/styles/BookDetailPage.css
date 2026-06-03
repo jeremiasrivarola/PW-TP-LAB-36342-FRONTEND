@@ -1,0 +1,218 @@
+.bookdetail-page {
+  min-height: 100vh;
+  background-color: #dfe5c2;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bookdetail-main {
+  flex: 1;
+  padding: 50px 60px;
+}
+
+.bookdetail-error {
+  color: #b00020;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.bookdetail-card {
+  max-width: 1050px;
+  margin: 0 auto;
+  background: #efebe7;
+  border: 4px solid #000;
+  border-radius: 34px;
+  padding: 30px 38px;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.bookdetail-left {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bookdetail-cover {
+  width: 180px;
+  height: 270px;
+  object-fit: cover;
+  border: 2px solid #000;
+  background: #f5f5f5;
+}
+
+.bookdetail-stars {
+  margin-top: 18px;
+  display: flex;
+  gap: 6px;
+}
+
+.bookdetail-star {
+  font-size: 42px;
+  color: #111;
+  line-height: 1;
+}
+
+.bookdetail-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bookdetail-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.bookdetail-title {
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0 0 4px;
+  color: #000;
+}
+
+.bookdetail-author {
+  font-size: 18px;
+  font-weight: 600;
+  color: #7c7c7c;
+  margin: 0 0 18px;
+}
+
+.bookdetail-edit-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.bookdetail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.bookdetail-meta p {
+  margin: 0;
+  font-size: 16px;
+  color: #222;
+}
+
+.bookdetail-section {
+  margin-bottom: 24px;
+}
+
+.bookdetail-section-title {
+  font-size: 20px;
+  margin: 0 0 8px;
+  color: #000;
+}
+
+.bookdetail-description {
+  font-size: 17px;
+  line-height: 1.55;
+  color: #222;
+  margin: 0;
+  max-width: 620px;
+}
+
+.bookdetail-note {
+  font-size: 16px;
+  line-height: 1.55;
+  color: #222;
+  margin: 0;
+}
+
+.bookdetail-status-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+
+.bookdetail-status-label {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #000;
+  text-align: left;
+}
+
+.bookdetail-status {
+  width: 100%;
+  max-width: 320px;
+  height: 76px;
+  border: 4px solid #000;
+  border-radius: 24px;
+  background: #d9ddbb;
+  font-size: 22px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  padding: 0 22px;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+}
+
+.bookdetail-status:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .bookdetail-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bookdetail-right {
+    width: 100%;
+  }
+
+  .bookdetail-top {
+    flex-direction: row;
+  }
+
+  .bookdetail-status-group {
+    align-items: flex-start;
+  }
+
+  .bookdetail-status {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .bookdetail-main {
+    padding: 24px 18px;
+  }
+
+  .bookdetail-card {
+    padding: 22px 20px;
+    border-radius: 24px;
+  }
+
+  .bookdetail-title {
+    font-size: 24px;
+  }
+
+  .bookdetail-cover {
+    width: 160px;
+    height: 240px;
+  }
+
+  .bookdetail-star {
+    font-size: 36px;
+  }
+
+  .bookdetail-status {
+    height: 62px;
+    font-size: 18px;
+  }
+}

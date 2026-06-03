@@ -13,6 +13,16 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  const getImageSrc = (coverUrl) => {
+    if (!coverUrl) return 'https://via.placeholder.com/120x180?text=Sem+Capa'
+
+    if (coverUrl.startsWith('/uploads')) {
+      return `http://localhost:3000${coverUrl}`
+    }
+
+    return coverUrl
+  }
+
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -47,9 +57,9 @@ export default function DashboardPage() {
 
   const limit = 2
 
-  const toReadBooks = books.filter((b) => b.status === 'TO_READ').slice(0, limit)
-  const readingBooks = books.filter((b) => b.status === 'READING').slice(0, limit)
-  const readBooks = books.filter((b) => b.status === 'READ').slice(0, limit)
+  const toReadBooks = books.filter((book) => book.status === 'TO_READ').slice(0, limit)
+  const readingBooks = books.filter((book) => book.status === 'READING').slice(0, limit)
+  const readBooks = books.filter((book) => book.status === 'READ').slice(0, limit)
 
   const renderSection = (title, sectionBooks, status) => {
     return (
@@ -64,7 +74,7 @@ export default function DashboardPage() {
               onClick={() => navigate(`/books/${book.id}`, { state: { token } })}
             >
               <img
-                src={book.coverUrl}
+                src={getImageSrc(book.coverUrl)}
                 alt={book.title}
                 className="dashboard-book-image"
                 onError={(e) => {
@@ -76,7 +86,6 @@ export default function DashboardPage() {
             </div>
           ))}
 
-          {/* Botão + Adicionar livro — passa o status da secção */}
           <div
             className="dashboard-book-card"
             onClick={() =>
@@ -89,7 +98,6 @@ export default function DashboardPage() {
             <p className="dashboard-action-text">Adicionar livro</p>
           </div>
 
-          {/* Botão Ver todos — passa o status para filtrar */}
           <div
             className="dashboard-book-card"
             onClick={() =>

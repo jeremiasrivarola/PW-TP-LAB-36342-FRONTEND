@@ -1,0 +1,190 @@
+.allbooks-page {
+  min-height: 100vh;
+  background-color: #dfe5c2;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+}
+
+.allbooks-main {
+  flex: 1;
+  padding: 36px 24px 50px;
+}
+
+.allbooks-layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.allbooks-filter {
+  background: #efebe7;
+  border: 4px solid #000;
+  border-radius: 28px;
+  padding: 22px 18px;
+  min-height: 370px;
+}
+
+.allbooks-filter-title {
+  font-size: 22px;
+  margin-bottom: 24px;
+}
+
+.allbooks-label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  margin-top: 18px;
+}
+
+.allbooks-select {
+  width: 100%;
+  height: 52px;
+  border: 3px solid #000;
+  border-radius: 16px;
+  padding: 0 14px;
+  background: #d9ddbb;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+.allbooks-clear-btn {
+  margin-top: 24px;
+  width: 100%;
+  height: 50px;
+  border: 3px solid #000;
+  border-radius: 16px;
+  background: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.allbooks-content {
+  min-width: 0;
+}
+
+.allbooks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.allbooks-title {
+  font-size: 36px;
+  margin: 0;
+}
+
+.allbooks-add-btn {
+  width: 44px;
+  height: 44px;
+  border: 3px solid #000;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.allbooks-list-box {
+  background: #efebe7;
+  border: 4px solid #000;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.allbooks-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 44px;
+  gap: 24px;
+  align-items: start;
+  padding: 20px 24px;
+  cursor: pointer;
+}
+
+.allbooks-row.with-divider {
+  border-bottom: 3px solid #000;
+}
+
+.allbooks-cover {
+  width: 78px;
+  height: 115px;
+  object-fit: cover;
+  border: 2px solid #000;
+  background: #f5f5f5;
+}
+
+.allbooks-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.allbooks-book-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.allbooks-author {
+  margin: 0;
+  color: #7b7b7b;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.allbooks-stars {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.allbooks-star {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.allbooks-edit-btn {
+  border: none;
+  background: none;
+  font-size: 30px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.allbooks-message,
+.allbooks-error {
+  font-size: 16px;
+}
+
+.allbooks-error {
+  color: #b00020;
+}
+
+@media (max-width: 900px) {
+  .allbooks-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .allbooks-filter {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .allbooks-row {
+    grid-template-columns: 1fr;
+  }
+
+  .allbooks-cover {
+    width: 100px;
+    height: 145px;
+  }
+
+  .allbooks-edit-btn {
+    justify-self: end;
+  }
+}

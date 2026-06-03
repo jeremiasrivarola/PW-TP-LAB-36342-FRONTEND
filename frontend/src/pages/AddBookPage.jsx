@@ -15,6 +15,7 @@ export default function AddBookPage() {
   const [year, setYear] = useState('')
   const [description, setDescription] = useState('')
   const [coverUrl, setCoverUrl] = useState('')
+  const [coverFile, setCoverFile] = useState(null)
   const [rating, setRating] = useState(0)
   const [personalNote, setPersonalNote] = useState('')
   const [status, setStatus] = useState('TO_READ')
@@ -24,22 +25,28 @@ export default function AddBookPage() {
   const [success, setSuccess] = useState('')
 
   const genres = [
-    'Fantasy',
-    'Romance',
-    'Drama',
-    'Dystopia',
-    'Thriller',
-    'Mystery',
-    'Horror',
-    'Adventure',
-    'Sci-Fi',
-    'Biography',
-    'History',
-    'Poetry',
-    'Young Adult',
-    'Classic',
-    'Other',
+    'ACTION',
+    'ADVENTURE',
+    'BIOGRAPHY',
+    'COMEDY',
+    'DRAMA',
+    'FANTASY',
+    'FICTION',
+    'HISTORY',
+    'HORROR',
+    'MYSTERY',
+    'POETRY',
+    'ROMANCE',
+    'SCIENCE',
+    'SCIENCE_FICTION',
+    'SUSPENSE',
+    'TECHNOLOGY',
+    'THRILLER',
   ]
+
+  const coverPreview = coverFile
+    ? URL.createObjectURL(coverFile)
+    : coverUrl
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -54,23 +61,28 @@ export default function AddBookPage() {
     setLoading(true)
 
     try {
+      const formData = new FormData()
+      formData.append('title', title)
+      formData.append('author', author)
+      formData.append('genre', genre)
+      formData.append('year', year)
+      formData.append('description', description)
+      formData.append('rating', rating)
+      formData.append('personalNote', personalNote)
+      formData.append('status', status)
+
+      if (coverFile) {
+        formData.append('cover', coverFile)
+      } else if (coverUrl.trim()) {
+        formData.append('coverUrl', coverUrl)
+      }
+
       const response = await fetch('http://localhost:3000/books', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          title,
-          author,
-          genre,
-          year: Number(year),
-          description,
-          coverUrl,
-          rating,
-          personalNote,
-          status,
-        }),
+        body: formData,
       })
 
       const data = await response.json()
@@ -104,9 +116,9 @@ export default function AddBookPage() {
         <form className="addbook-card" onSubmit={handleSubmit}>
           <div className="addbook-left">
             <div className="addbook-cover-box">
-              {coverUrl ? (
+              {coverPreview ? (
                 <img
-                  src={coverUrl}
+                  src={coverPreview}
                   alt={title || 'Capa do livro'}
                   className="addbook-cover-image"
                   onError={(e) => {
@@ -129,19 +141,28 @@ export default function AddBookPage() {
               placeholder="https://..."
             />
 
+            <label className="addbook-label">Ou carregar capa</label>
+            <input
+              type="file"
+              className="addbook-input"
+              accept=".png,.jpg,.jpeg,image/png,image/jpeg"
+              onChange={(e) => setCoverFile(e.target.files[0] || null)}
+            />
+
             <label className="addbook-label">Rating</label>
-            <div className="addbook-stars">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  className={`addbook-star ${rating >= star ? 'active' : ''}`}
-                  onClick={() => setRating(star)}
-                >
-                  ★
-                </button>
-              ))}
-            </div>
+            
+<div className="addbook-stars">
+  {[1, 2, 3, 4, 5].map((star) => (
+    <button
+      key={star}
+      type="button"
+      className="addbook-star"
+      onClick={() => setRating(star)}
+    >
+      {rating >= star ? '★' : '☆'}
+    </button>
+  ))}
+</div>
           </div>
 
           <div className="addbook-right">
