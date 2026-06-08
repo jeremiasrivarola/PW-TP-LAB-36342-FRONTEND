@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getToken } from '../utils/auth'
 import '../styles/EditBookPage.css'
 
 export default function EditBookPage() {
   const { id } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const token = location.state?.token
+  const token = getToken()
+  const forceRatingMessage = location.state?.forceRatingMessage || ''
 
   const genreOptions = [
     { value: 'ACTION', label: 'ACTION' },
@@ -73,6 +75,11 @@ export default function EditBookPage() {
           },
         })
 
+        if (response.status === 401) {
+          navigate('/login', { replace: true })
+          return
+        }
+
         const data = await response.json()
 
         if (!response.ok) {
@@ -90,6 +97,10 @@ export default function EditBookPage() {
           status: data.status || 'TO_READ',
           coverUrl: data.coverUrl || '',
         })
+
+        if (forceRatingMessage) {
+          setError(forceRatingMessage)
+        }
       } catch (err) {
         setError(err.message)
       } finally {
@@ -98,13 +109,13 @@ export default function EditBookPage() {
     }
 
     if (!token) {
-      setError('Sem token. Faz login novamente.')
       setLoading(false)
+      navigate('/login', { replace: true })
       return
     }
 
     fetchBook()
-  }, [id, token])
+  }, [id, token, forceRatingMessage, navigate])
 
   useEffect(() => {
     return () => {
@@ -122,6 +133,10 @@ export default function EditBookPage() {
       [name]: value,
     }))
 
+    if (name === 'status' && value !== 'READ') {
+      setError('')
+    }
+
     if (name === 'coverUrl') {
       setSelectedFile(null)
       if (previewImage) {
@@ -136,6 +151,10 @@ export default function EditBookPage() {
       ...prev,
       rating: value,
     }))
+
+    if (formData.status === 'READ' && value >= 1) {
+      setError('')
+    }
   }
 
   const handleFileChange = (e) => {
@@ -155,6 +174,12 @@ export default function EditBookPage() {
     e.preventDefault()
     setSaving(true)
     setError('')
+
+    if (formData.status === 'READ' && Number(formData.rating) < 1) {
+      setError('Se o estado for Lido, tens de atribuir um rating.')
+      setSaving(false)
+      return
+    }
 
     try {
       const bodyData = new FormData()
@@ -180,13 +205,18 @@ export default function EditBookPage() {
         body: bodyData,
       })
 
+      if (response.status === 401) {
+        navigate('/login', { replace: true })
+        return
+      }
+
       const data = await response.json()
 
       if (!response.ok) {
         throw new Error(data.error || 'Erro ao atualizar livro')
       }
 
-      navigate(`/books/${id}`, { state: { token } })
+      navigate(`/books/${id}`)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -212,6 +242,11 @@ export default function EditBookPage() {
         },
       })
 
+      if (response.status === 401) {
+        navigate('/login', { replace: true })
+        return
+      }
+
       if (!response.ok) {
         const data = await response.json()
         throw new Error(data.error || 'Erro ao apagar livro')
@@ -219,7 +254,6 @@ export default function EditBookPage() {
 
       navigate('/dashboard', {
         replace: true,
-        state: { token },
       })
     } catch (err) {
       setError(err.message)
@@ -229,7 +263,7 @@ export default function EditBookPage() {
   }
 
   const handleCancel = () => {
-    navigate(`/books/${id}`, { state: { token } })
+    navigate(`/books/${id}`)
   }
 
   if (loading) {
@@ -313,6 +347,12 @@ export default function EditBookPage() {
                     )
                   })}
                 </div>
+
+                {formData.status === 'READ' && Number(formData.rating) < 1 && (
+                  <p className="editbook-rating-warning">
+                    Se o estado for Lido, tens de escolher um rating.
+                  </p>
+                )}
               </div>
             </div>
 

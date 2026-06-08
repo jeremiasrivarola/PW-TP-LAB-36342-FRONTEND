@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getToken } from '../utils/auth'
 import '../styles/Dashboard.css'
 
 export default function DashboardPage() {
-  const location = useLocation()
   const navigate = useNavigate()
-  const token = location.state?.token
+  const token = getToken()
 
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -34,6 +34,11 @@ export default function DashboardPage() {
           },
         })
 
+        if (response.status === 401) {
+          navigate('/login', { replace: true })
+          return
+        }
+
         if (!response.ok) {
           throw new Error('Erro ao buscar os livros')
         }
@@ -51,11 +56,11 @@ export default function DashboardPage() {
       fetchBooks()
     } else {
       setLoading(false)
-      setError('Sem token')
+      navigate('/login', { replace: true })
     }
-  }, [token])
+  }, [token, navigate])
 
-  const limit = 2
+  const limit = 4
 
   const toReadBooks = books.filter((book) => book.status === 'TO_READ').slice(0, limit)
   const readingBooks = books.filter((book) => book.status === 'READING').slice(0, limit)
@@ -68,10 +73,10 @@ export default function DashboardPage() {
 
         <div className="dashboard-row">
           {sectionBooks.map((book) => (
-            <div
+            <figure
               key={book.id}
               className="dashboard-book-card"
-              onClick={() => navigate(`/books/${book.id}`, { state: { token } })}
+              onClick={() => navigate(`/books/${book.id}`)}
             >
               <img
                 src={getImageSrc(book.coverUrl)}
@@ -83,13 +88,16 @@ export default function DashboardPage() {
                     'https://via.placeholder.com/120x180?text=Sem+Capa'
                 }}
               />
-            </div>
+              <figcaption className="dashboard-book-title">
+                {book.title}
+              </figcaption>
+            </figure>
           ))}
 
           <div
             className="dashboard-book-card"
             onClick={() =>
-              navigate('/add-book', { state: { token, defaultStatus: status } })
+              navigate('/add-book', { state: { defaultStatus: status } })
             }
           >
             <div className="dashboard-action-card">
@@ -101,11 +109,11 @@ export default function DashboardPage() {
           <div
             className="dashboard-book-card"
             onClick={() =>
-              navigate('/all-books', { state: { token, filterStatus: status } })
+              navigate('/all-books', { state: { filterStatus: status } })
             }
           >
             <div className="dashboard-action-card">
-              <div className="dashboard-circle dashboard-circle-list">≡</div>
+              <div className="dashboard-circle dashboard-circle-list"></div>
             </div>
             <p className="dashboard-action-text">Ver todos</p>
           </div>

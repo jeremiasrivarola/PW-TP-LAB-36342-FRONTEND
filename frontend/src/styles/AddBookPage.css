@@ -208,3 +208,27 @@
     height: 260px;
   }
 }
+
+.addbook-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.addbook-rating-clear {
+  border: 3px solid #000;
+  border-radius: 18px;
+  background: #f4f4f4;
+  padding: 8px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+.addbook-rating-value {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #444;
+}

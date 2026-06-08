@@ -2,13 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getToken } from '../utils/auth'
 import '../styles/AllBooksPage.css'
 
 export default function AllBooksPage() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const token = location.state?.token
+  const token = getToken()
   const initialStatus = location.state?.filterStatus || ''
 
   const [books, setBooks] = useState([])
@@ -63,6 +64,11 @@ export default function AllBooksPage() {
           },
         })
 
+        if (response.status === 401) {
+          navigate('/login', { replace: true })
+          return
+        }
+
         const data = await response.json()
 
         if (!response.ok) {
@@ -78,13 +84,13 @@ export default function AllBooksPage() {
     }
 
     if (!token) {
-      setError('Sem token. Faz login novamente.')
       setLoading(false)
+      navigate('/login', { replace: true })
       return
     }
 
     fetchBooks()
-  }, [token])
+  }, [token, navigate])
 
   const filteredBooks = useMemo(() => {
     return books.filter((book) => {
@@ -150,7 +156,7 @@ export default function AllBooksPage() {
                 className="allbooks-add-btn"
                 onClick={() =>
                   navigate('/add-book', {
-                    state: { token, defaultStatus: statusFilter || 'TO_READ' },
+                    state: { defaultStatus: statusFilter || 'TO_READ' },
                   })
                 }
               >
@@ -166,54 +172,52 @@ export default function AllBooksPage() {
             )}
 
             {!loading && !error && filteredBooks.length > 0 && (
-  <div className="allbooks-list-box">
-    {filteredBooks.map((book, index) => (
-      <div
-        key={book.id}
-        className={`allbooks-row ${
-          index !== filteredBooks.length - 1 ? 'with-divider' : ''
-        }`}
-        onClick={() =>
-          navigate(`/books/${book.id}`, { state: { token } })
-        }
-      >
-        <img
-          src={getImageSrc(book.coverUrl)}
-          alt={book.title}
-          className="allbooks-cover"
-          onError={(e) => {
-            e.currentTarget.onerror = null
-            e.currentTarget.src =
-              'https://via.placeholder.com/90x130?text=Sem+Capa'
-          }}
-        />
+              <div className="allbooks-list-box">
+                {filteredBooks.map((book, index) => (
+                  <div
+                    key={book.id}
+                    className={`allbooks-row ${
+                      index !== filteredBooks.length - 1 ? 'with-divider' : ''
+                    }`}
+                    onClick={() => navigate(`/books/${book.id}`)}
+                  >
+                    <img
+                      src={getImageSrc(book.coverUrl)}
+                      alt={book.title}
+                      className="allbooks-cover"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null
+                        e.currentTarget.src =
+                          'https://via.placeholder.com/90x130?text=Sem+Capa'
+                      }}
+                    />
 
-        <div className="allbooks-info">
-          <h3 className="allbooks-book-title">{book.title}</h3>
-          <p className="allbooks-author">{book.author}</p>
+                    <div className="allbooks-info">
+                      <h3 className="allbooks-book-title">{book.title}</h3>
+                      <p className="allbooks-author">{book.author}</p>
 
-          <div className="allbooks-stars">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span key={star} className="allbooks-star">
-                {book.rating >= star ? '★' : '☆'}
-              </span>
-            ))}
-          </div>
-        </div>
+                      <div className="allbooks-stars">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span key={star} className="allbooks-star">
+                            {book.rating >= star ? '★' : '☆'}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
 
-        <button
-          className="allbooks-edit-btn"
-          onClick={(e) => {
-            e.stopPropagation()
-            navigate(`/books/${book.id}/edit`, { state: { token } })
-          }}
-        >
-          ✎
-        </button>
-      </div>
-    ))}
-  </div>
-)}
+                    <button
+                      className="allbooks-edit-btn"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(`/books/${book.id}/edit`)
+                      }}
+                    >
+                      ✎
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         </div>
       </main>

@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getToken } from '../utils/auth'
 import '../styles/BookDetailPage.css'
 
 export default function BookDetailPage() {
   const { id } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const token = location.state?.token
+  const token = getToken()
 
   const [book, setBook] = useState(null)
   const [status, setStatus] = useState('')
@@ -35,6 +36,11 @@ export default function BookDetailPage() {
           },
         })
 
+        if (response.status === 401) {
+          navigate('/login', { replace: true })
+          return
+        }
+
         const data = await response.json()
 
         if (!response.ok) {
@@ -51,18 +57,31 @@ export default function BookDetailPage() {
     }
 
     if (!token) {
-      setError('Sem token. Faz login novamente.')
       setLoading(false)
+      navigate('/login', { replace: true })
       return
     }
 
     fetchBook()
-  }, [id, token])
+  }, [id, token, navigate])
 
   const handleStatusUpdate = async (newStatus) => {
+    setError('')
+
+    if (newStatus === 'READ' && (!book.rating || Number(book.rating) < 1)) {
+      setError('Para marcar como lido, tens de dar um rating primeiro.')
+      setStatus(book.status)
+
+      navigate(`/books/${book.id}/edit`, {
+        state: {
+          forceRatingMessage: 'Para marcar este livro como lido, tens de atribuir um rating.',
+        },
+      })
+      return
+    }
+
     setStatus(newStatus)
     setSaving(true)
-    setError('')
 
     try {
       const response = await fetch(`http://localhost:3000/books/${id}`, {
@@ -76,6 +95,11 @@ export default function BookDetailPage() {
         }),
       })
 
+      if (response.status === 401) {
+        navigate('/login', { replace: true })
+        return
+      }
+
       const data = await response.json()
 
       if (!response.ok) {
@@ -83,8 +107,10 @@ export default function BookDetailPage() {
       }
 
       setBook(data)
+      setStatus(data.status)
     } catch (err) {
       setError(err.message)
+      setStatus(book.status)
     } finally {
       setSaving(false)
     }
@@ -152,9 +178,7 @@ export default function BookDetailPage() {
 
               <button
                 className="bookdetail-edit-btn"
-                onClick={() =>
-                  navigate(`/books/${book.id}/edit`, { state: { token } })
-                }
+                onClick={() => navigate(`/books/${book.id}/edit`)}
               >
                 ✎
               </button>

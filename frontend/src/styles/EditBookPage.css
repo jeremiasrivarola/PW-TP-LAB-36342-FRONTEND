@@ -227,3 +227,10 @@
     width: 100%;
   }
 }
+
+.editbook-rating-warning {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #b00020;
+  font-weight: 500;
+}
