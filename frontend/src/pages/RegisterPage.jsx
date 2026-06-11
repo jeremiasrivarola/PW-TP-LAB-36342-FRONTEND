@@ -3,6 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../styles/RegisterPage.css'
 import logo from '../assets/logo.png'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function RegisterPage() {
   const navigate = useNavigate()
 
@@ -19,7 +24,7 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:3000/auth/register', {
+      const response = await fetch(`${carreira}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

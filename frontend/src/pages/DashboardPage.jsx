@@ -5,6 +5,11 @@ import Footer from '../components/Footer'
 import { getToken } from '../utils/auth'
 import '../styles/Dashboard.css'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function DashboardPage() {
   const navigate = useNavigate()
   const token = getToken()
@@ -17,7 +22,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://localhost:3000/books', {
+        const response = await fetch(`${carreira}/books`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
