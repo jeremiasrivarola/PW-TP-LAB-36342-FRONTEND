@@ -44,16 +44,6 @@ export default function AllBooksPage() {
     READ: 'Lidos',
   }
 
-  const getImageSrc = (coverUrl) => {
-    if (!coverUrl) return 'https://via.placeholder.com/90x130?text=Sem+Capa'
-
-    if (coverUrl.startsWith('/uploads')) {
-      return `http://localhost:3000${coverUrl}`
-    }
-
-    return coverUrl
-  }
-
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -181,16 +171,17 @@ export default function AllBooksPage() {
                     }`}
                     onClick={() => navigate(`/books/${book.id}`)}
                   >
-                    <img
-                      src={getImageSrc(book.coverUrl)}
-                      alt={book.title}
-                      className="allbooks-cover"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null
-                        e.currentTarget.src =
-                          'https://via.placeholder.com/90x130?text=Sem+Capa'
-                      }}
-                    />
+                    {book.coverUrl ? (
+                      <img
+                        src={book.coverUrl}
+                        alt={book.title}
+                        className="allbooks-cover"
+                      />
+                    ) : (
+                      <div className="allbooks-cover allbooks-cover-placeholder">
+                        Sem capa
+                      </div>
+                    )}
 
                     <div className="allbooks-info">
                       <h3 className="allbooks-book-title">{book.title}</h3>

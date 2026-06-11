@@ -188,3 +188,12 @@
     justify-self: end;
   }
 }
+.allbooks-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f1f1;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+}

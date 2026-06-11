@@ -12,16 +12,7 @@ export default function DashboardPage() {
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-
-  const getImageSrc = (coverUrl) => {
-    if (!coverUrl) return 'https://via.placeholder.com/120x180?text=Sem+Capa'
-
-    if (coverUrl.startsWith('/uploads')) {
-      return `http://localhost:3000${coverUrl}`
-    }
-
-    return coverUrl
-  }
+  const [imageErrors, setImageErrors] = useState({})
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -66,6 +57,33 @@ export default function DashboardPage() {
   const readingBooks = books.filter((book) => book.status === 'READING').slice(0, limit)
   const readBooks = books.filter((book) => book.status === 'READ').slice(0, limit)
 
+  const renderBookCover = (book) => {
+    const hasImage = book.coverUrl && !imageErrors[book.id]
+
+    if (hasImage) {
+      return (
+        <img
+          src={book.coverUrl}
+          alt={book.title}
+          className="dashboard-book-image"
+          loading="lazy"
+          onError={() =>
+            setImageErrors((prev) => ({
+              ...prev,
+              [book.id]: true,
+            }))
+          }
+        />
+      )
+    }
+
+    return (
+      <div className="dashboard-book-image dashboard-book-placeholder">
+        Sem capa
+      </div>
+    )
+  }
+
   const renderSection = (title, sectionBooks, status) => {
     return (
       <section className="dashboard-section">
@@ -78,16 +96,7 @@ export default function DashboardPage() {
               className="dashboard-book-card"
               onClick={() => navigate(`/books/${book.id}`)}
             >
-              <img
-                src={getImageSrc(book.coverUrl)}
-                alt={book.title}
-                className="dashboard-book-image"
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src =
-                    'https://via.placeholder.com/120x180?text=Sem+Capa'
-                }}
-              />
+              {renderBookCover(book)}
               <figcaption className="dashboard-book-title">
                 {book.title}
               </figcaption>

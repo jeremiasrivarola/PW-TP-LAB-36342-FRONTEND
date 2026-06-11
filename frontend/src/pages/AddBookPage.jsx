@@ -48,7 +48,7 @@ export default function AddBookPage() {
 
   useEffect(() => {
     if (!coverFile) {
-      setCoverPreview(coverUrl)
+      setCoverPreview(coverUrl.trim())
       return
     }
 
@@ -147,9 +147,9 @@ export default function AddBookPage() {
       formData.append('status', status)
 
       if (status === 'READ') {
-        formData.append('rating', rating)
+        formData.append('rating', String(rating))
       } else {
-        formData.append('rating', 0)
+        formData.append('rating', '0')
       }
 
       if (coverFile) {
@@ -207,11 +207,6 @@ export default function AddBookPage() {
                   src={coverPreview}
                   alt={title || 'Capa do livro'}
                   className="addbook-cover-image"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null
-                    e.currentTarget.src =
-                      'https://via.placeholder.com/220x320?text=Sem+Capa'
-                  }}
                 />
               ) : (
                 <div className="addbook-cover-placeholder">Sem capa</div>
@@ -224,8 +219,9 @@ export default function AddBookPage() {
               className="addbook-input"
               value={coverUrl}
               onChange={(e) => {
-                setCoverUrl(e.target.value)
-                if (e.target.value.trim()) {
+                const value = e.target.value
+                setCoverUrl(value)
+                if (value.trim()) {
                   setCoverFile(null)
                 }
               }}
@@ -238,7 +234,7 @@ export default function AddBookPage() {
               className="addbook-input"
               accept=".png,.jpg,.jpeg,image/png,image/jpeg"
               onChange={(e) => {
-                const file = e.target.files[0] || null
+                const file = e.target.files?.[0] || null
                 setCoverFile(file)
                 if (file) {
                   setCoverUrl('')

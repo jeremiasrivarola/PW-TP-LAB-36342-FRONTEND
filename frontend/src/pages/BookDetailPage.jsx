@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getToken } from '../utils/auth'
@@ -7,7 +7,6 @@ import '../styles/BookDetailPage.css'
 
 export default function BookDetailPage() {
   const { id } = useParams()
-  const location = useLocation()
   const navigate = useNavigate()
   const token = getToken()
 
@@ -16,16 +15,7 @@ export default function BookDetailPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
-
-  const getImageSrc = (coverUrl) => {
-    if (!coverUrl) return 'https://via.placeholder.com/220x320?text=Sem+Capa'
-
-    if (coverUrl.startsWith('/uploads')) {
-      return `http://localhost:3000${coverUrl}`
-    }
-
-    return coverUrl
-  }
+  const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -49,6 +39,7 @@ export default function BookDetailPage() {
 
         setBook(data)
         setStatus(data.status)
+        setImageError(false)
       } catch (err) {
         setError(err.message)
       } finally {
@@ -149,16 +140,18 @@ export default function BookDetailPage() {
 
         <div className="bookdetail-card">
           <div className="bookdetail-left">
-            <img
-              src={getImageSrc(book.coverUrl)}
-              alt={book.title}
-              className="bookdetail-cover"
-              onError={(e) => {
-                e.currentTarget.onerror = null
-                e.currentTarget.src =
-                  'https://via.placeholder.com/220x320?text=Sem+Capa'
-              }}
-            />
+            {book.coverUrl && !imageError ? (
+              <img
+                src={book.coverUrl}
+                alt={book.title}
+                className="bookdetail-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className="bookdetail-cover bookdetail-cover-placeholder">
+                Sem capa
+              </div>
+            )}
 
             <div className="bookdetail-stars">
               {[1, 2, 3, 4, 5].map((star) => (

@@ -51,19 +51,12 @@ export default function EditBookPage() {
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState('')
+  const [imageError, setImageError] = useState(false)
 
   const getImageSrc = () => {
     if (previewImage) return previewImage
-
-    if (!formData.coverUrl) {
-      return 'https://via.placeholder.com/220x320?text=Sem+Capa'
-    }
-
-    if (formData.coverUrl.startsWith('/uploads')) {
-      return `http://localhost:3000${formData.coverUrl}`
-    }
-
-    return formData.coverUrl
+    if (formData.coverUrl) return formData.coverUrl
+    return ''
   }
 
   useEffect(() => {
@@ -97,6 +90,8 @@ export default function EditBookPage() {
           status: data.status || 'TO_READ',
           coverUrl: data.coverUrl || '',
         })
+
+        setImageError(false)
 
         if (forceRatingMessage) {
           setError(forceRatingMessage)
@@ -139,9 +134,12 @@ export default function EditBookPage() {
 
     if (name === 'coverUrl') {
       setSelectedFile(null)
+      setImageError(false)
+
       if (previewImage) {
         URL.revokeObjectURL(previewImage)
       }
+
       setPreviewImage('')
     }
   }
@@ -168,6 +166,12 @@ export default function EditBookPage() {
     const objectUrl = URL.createObjectURL(file)
     setSelectedFile(file)
     setPreviewImage(objectUrl)
+    setImageError(false)
+
+    setFormData((prev) => ({
+      ...prev,
+      coverUrl: '',
+    }))
   }
 
   const handleSubmit = async (e) => {
@@ -278,6 +282,9 @@ export default function EditBookPage() {
     )
   }
 
+  const imageSrc = getImageSrc()
+  const showImage = imageSrc && !imageError
+
   return (
     <div className="editbook-page">
       <Navbar />
@@ -289,16 +296,18 @@ export default function EditBookPage() {
           <form className="editbook-form" onSubmit={handleSubmit}>
             <div className="editbook-sidebar">
               <div className="editbook-cover-box">
-                <img
-                  src={getImageSrc()}
-                  alt={formData.title || 'Capa do livro'}
-                  className="editbook-cover-image"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null
-                    e.currentTarget.src =
-                      'https://via.placeholder.com/220x320?text=Sem+Capa'
-                  }}
-                />
+                {showImage ? (
+                  <img
+                    src={imageSrc}
+                    alt={formData.title || 'Capa do livro'}
+                    className="editbook-cover-image"
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <div className="editbook-cover-image editbook-cover-placeholder">
+                    Sem capa
+                  </div>
+                )}
               </div>
 
               <label className="editbook-label">

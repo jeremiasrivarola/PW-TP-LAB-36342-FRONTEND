@@ -104,3 +104,12 @@
   font-weight: bold;
   color: #000;
 }
+.dashboard-book-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f1f1;
+  color: #666;
+  text-align: center;
+  font-size: 14px;
+}

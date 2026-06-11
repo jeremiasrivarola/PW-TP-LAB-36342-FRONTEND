@@ -234,3 +234,12 @@
   color: #b00020;
   font-weight: 500;
 }
+
+.editbook-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f1f1;
+  color: #666;
+  text-align: center;
+}
