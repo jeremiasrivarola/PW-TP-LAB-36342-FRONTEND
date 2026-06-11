@@ -5,6 +5,11 @@ import Footer from '../components/Footer'
 import { getToken } from '../utils/auth'
 import '../styles/BookDetailPage.css'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function BookDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -20,7 +25,7 @@ export default function BookDetailPage() {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/books/${id}`, {
+        const response = await fetch(`${carreira}/books/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -75,7 +80,7 @@ export default function BookDetailPage() {
     setSaving(true)
 
     try {
-      const response = await fetch(`http://localhost:3000/books/${id}`, {
+      const response = await fetch(`${carreira}/books/${id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

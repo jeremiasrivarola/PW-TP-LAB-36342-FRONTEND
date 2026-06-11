@@ -5,6 +5,11 @@ import Footer from '../components/Footer'
 import { getToken } from '../utils/auth'
 import '../styles/EditBookPage.css'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function EditBookPage() {
   const { id } = useParams()
   const location = useLocation()
@@ -62,7 +67,7 @@ export default function EditBookPage() {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/books/${id}`, {
+        const response = await fetch(`${carreira}/books/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -201,7 +206,7 @@ export default function EditBookPage() {
         bodyData.append('cover', selectedFile)
       }
 
-      const response = await fetch(`http://localhost:3000/books/${id}`, {
+      const response = await fetch(`${carreira}/books/${id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -239,7 +244,7 @@ export default function EditBookPage() {
     setError('')
 
     try {
-      const response = await fetch(`http://localhost:3000/books/${id}`, {
+      const response = await fetch(`${carreira}/books/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

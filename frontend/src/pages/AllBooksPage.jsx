@@ -5,6 +5,11 @@ import Footer from '../components/Footer'
 import { getToken } from '../utils/auth'
 import '../styles/AllBooksPage.css'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function AllBooksPage() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -47,7 +52,7 @@ export default function AllBooksPage() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://localhost:3000/books', {
+        const response = await fetch(`${carreira}/books`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

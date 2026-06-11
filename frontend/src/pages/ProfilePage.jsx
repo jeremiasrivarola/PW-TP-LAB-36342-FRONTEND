@@ -5,6 +5,11 @@ import Footer from '../components/Footer'
 import { getToken, removeToken } from '../utils/auth'
 import '../styles/ProfilePage.css'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function ProfilePage() {
   const navigate = useNavigate()
   const token = getToken()
@@ -36,12 +41,12 @@ export default function ProfilePage() {
     const fetchProfileData = async () => {
       try {
         const [userResponse, statsResponse] = await Promise.all([
-          fetch('http://localhost:3000/users/me', {
+          fetch(`${carreira}/users/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch('http://localhost:3000/stats', {
+          fetch(`${carreira}/stats`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -135,7 +140,7 @@ export default function ProfilePage() {
         payload.password = formData.password
       }
 
-      const response = await fetch('http://localhost:3000/users/me', {
+      const response = await fetch(`${carreira}/users/me`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

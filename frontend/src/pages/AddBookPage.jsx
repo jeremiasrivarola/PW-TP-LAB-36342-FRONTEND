@@ -5,6 +5,11 @@ import Footer from '../components/Footer'
 import { getToken } from '../utils/auth'
 import '../styles/AddBookPage.css'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function AddBookPage() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -158,7 +163,7 @@ export default function AddBookPage() {
         formData.append('coverUrl', coverUrl.trim())
       }
 
-      const response = await fetch('http://localhost:3000/books', {
+      const response = await fetch(`${carreira}/books`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
