@@ -9,6 +9,7 @@ import AllBooksPage from './pages/AllBooksPage.jsx'
 import EditBookPage from './pages/EditBookPage.jsx'
 import ProfilePage from './pages/ProfilePage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import ErroPage from './pages/ErroPage.jsx'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="*" element={<ErroPage />} />
 
         <Route
           path="/dashboard"
