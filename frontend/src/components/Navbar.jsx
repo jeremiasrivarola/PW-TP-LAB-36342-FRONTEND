@@ -4,6 +4,11 @@ import { getToken } from '../utils/auth'
 import './Navbar.css'
 import logo from '../assets/logo.png'
 
+const carreira =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://pw-tp-36342-api.vercel.app'
+
 export default function Navbar() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
@@ -20,7 +25,7 @@ export default function Navbar() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/books', {
+      const response = await fetch(`${carreira}/books`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
